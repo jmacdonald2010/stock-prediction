@@ -1,0 +1,8 @@
+/databaseBackups
+/.vscode
+/.ipynb_checkpoints
+/__pycache__
+/oldData
+/test_notebooks
+/test_development_files
+config.py
