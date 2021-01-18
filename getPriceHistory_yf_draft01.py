@@ -32,7 +32,7 @@ for symbol in symbols:
     price_history_query = "INSERT INTO priceHistory (stockInfo_tickerID, createdDate, priceDateTime, openPrice, closePrice, priceHigh, priceLow, volume, priceHistory_vendorID) VALUES "
     
     # read datatime info from db
-    data_in_db = read_query(connection, f"SELECT stockInfo_tickerID, priceDateTime FROM priceHistory WHERE stockInfo_tickerID = {symbol};")
+    data_in_db = read_query(connection, f"SELECT stockInfo_tickerID, priceDateTime FROM priceHistory WHERE stockInfo_tickerID = '{symbol}';")
     
     # create a list of prev_datetimes for the iterated symbol
     prev_datetimes = []
@@ -60,8 +60,11 @@ for symbol in symbols:
         close_price = row[4]
         volume = row[6]
 
+        price_datetime = price_datetime.strftime("%Y-%m-%d %H:%M:%S")
+
         # if a prev date_time is already in the db, just skip it to avoid redudancy
-        if price_datetime in prev_datetimes:
+        # this statement works, turns out my data is a bit off in the DB 
+        if prev_datetimes.count(price_datetime) > 0:
             print('redundant data, skipping')
             continue
         
@@ -69,8 +72,11 @@ for symbol in symbols:
         created_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # add to the query string all of the data over reach
-        price_history_query = price_history_query + f"\n({symbol}, {created_date}, {price_datetime}, {open_price}, {close_price}, {high_price}, {low_price}, {volume}, 2),"
-
+        price_history_query = price_history_query + f"\n('{symbol}', '{created_date}', '{price_datetime}', '{open_price}', '{close_price}', '{high_price}', '{low_price}', '{volume}', '2'),"
+    
+    # fix the last line of the query is remove the last comma, change it to a ;
+    price_history_query = price_history_query[:-1]
+    price_history_query = price_history_query + ";"
     # write the query to the DB
     execute_query(connection, price_history_query)
     time.sleep(5)
