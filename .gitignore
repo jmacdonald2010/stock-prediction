@@ -7,3 +7,4 @@
 /test_development_files
 config.py
 getPriceHistory_yfinance.ipynb
+.DS_store
