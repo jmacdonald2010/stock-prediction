@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 04/08/2021 07:47
+Running into syntax errors w/ my SQL queries. Suspect it has something to do w/ how the check_industry and sector methods are returning the sector/industry ID, which is as a tuple. Need to sort that out.
+
 ## 04/07/2021 22:38
 Working on building the script to take all of the symbols in a list and fetch the data for those symbols. Attempting to make a slightly OOP approach, partly for practice, and partly to keep things neat and tidy. Unsure if my check_industry and check_sector methods work or not. Goal is to update the check_sector method to actually get it to assign a value to self.sector_id, then to finish building the loop and actually try to run it.
 

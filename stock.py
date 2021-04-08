@@ -16,7 +16,7 @@ class Stock:
         self.sector_id = sector_id
         self.industry_id = industry_id
 
-    def check_industry(self, industry, conn):
+    def check_industry(self, industry_name, conn):
         '''This method takes the industry given as an input and checks to see if it exists in the database. If it does not already exist in the database, it adds it to the database.'''
 
         industries = conn.execute('SELECT industry FROM industry')
@@ -27,15 +27,15 @@ class Stock:
         # if the industry is not found, we add it to the db
         x = False
         for i in industries:
-            if i == industry:
+            if i == industry_name:
                 x = True
                 break
         if x is False:
-            conn.execute(f'INSERT INTO industry (industry) VALUES ({industry})')
+            conn.execute(f"INSERT INTO industry (industry) VALUES ('{industry_name}')")
             conn.commit()
-            industry_id = conn.execute(f'SELECT industry_id FROM industry WHERE industry = {industry}')
-            industry_id = industry_id.fetchall()
-            self.industry_id = industry_id[0]   # not quite sure if this is how this should work.
+        industry_id = conn.execute(f"SELECT industry_id FROM industry WHERE industry = '{industry_name}'")
+        industry_id = industry_id.fetchall()
+        self.industry_id = industry_id[0]   # not quite sure if this is how this should work.
 
     def check_sector(self, sector, conn):
         '''This method takes the sector given as an input and checks to see if it exists in the database. If it does not already exist in the database, it adds it to the database.'''
@@ -43,17 +43,20 @@ class Stock:
         sectors = conn.execute('SELECT sector FROM sector')
         sectors = sectors.fetchall()
         
-        # loop thru all of the different industries in the industry table
-        # if the industry is found, we exit the while loop w/o adding it.
-        # if the industry is not found, we add it to the db
+        # loop thru all of the different sectors in the sector table
+        # if the sector is found, we exit the while loop w/o adding it.
+        # if the sector is not found, we add it to the db
         x = False
         for i in sectors:
             if i == sectors:
                 x = True
                 break
         if x is False:
-            conn.execute(f'INSERT INTO sector (sector) VALUES ({sector})')
+            conn.execute(f"INSERT INTO sector (sector) VALUES ('{sector}')")
             conn.commit()
+        sector_id = conn.execute(f"SELECT sector_id FROM sector WHERE sector = '{sector}'")
+        sector_id = sector_id.fetchall()
+        self.sector_id = sector_id[0]
 
 class Price:
 
