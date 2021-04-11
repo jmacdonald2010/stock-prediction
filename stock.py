@@ -74,8 +74,19 @@ class Price:
         self.dividends = dividends
         self.stock_splits = stock_splits
 
+    def __str__(self):
+        print("Symbol: ", self.stock.symbol)
+        print("Open Price: ", self.open_price)
+        print("High Price: ", self.high_price)
+        print("Low Price: ", self.low_price)
+        print("Close Price: ", self.close_price)
+        print("Volume: ", self.volume)
+        print("Price Datetime: ", self.price_datetime)
+        print("Diviends: ", self.dividends)
+        print("Stock Splits: ", self.stock_splits)
+
 def get_current_datetime():
     '''Determines the current Datetime in Year-Month-Day Hour:Min:Sec format and returns it as a string.'''
-    current_datetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S"')
+    current_datetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     return current_datetime
 

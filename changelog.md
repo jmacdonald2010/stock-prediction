@@ -1,5 +1,12 @@
 # Changelog for in-progress branch
 
+## 04/11/2021 16:14
+Code for the get_price_history_loop file not yet test-run. Changes I'd like to add before finalizing it are below.
+
+Still needed:
+    - While loop, so it can run indefinetly on a Raspberry Pi
+    - Possible log file to keep track of the loop.
+
 ## 04/11/2021 15:09
 Got a code cell in my sketches notebook to add all of the securities I'd like to collect data for to my SQLite database. Ran that, now working on creating the script that will run indefinetly collecting data (which for me, will be running on a Raspberry Pi)
 
