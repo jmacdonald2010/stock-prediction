@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 04/11/2021 15:09
+Got a code cell in my sketches notebook to add all of the securities I'd like to collect data for to my SQLite database. Ran that, now working on creating the script that will run indefinetly collecting data (which for me, will be running on a Raspberry Pi)
+
 ## 04/08/2021 07:47
 Running into syntax errors w/ my SQL queries. Suspect it has something to do w/ how the check_industry and sector methods are returning the sector/industry ID, which is as a tuple. Need to sort that out.
 

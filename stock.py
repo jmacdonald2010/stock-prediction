@@ -27,15 +27,16 @@ class Stock:
         # if the industry is not found, we add it to the db
         x = False
         for i in industries:
-            if i == industry_name:
+            if i[0] == industry_name:
                 x = True
                 break
         if x is False:
             conn.execute(f"INSERT INTO industry (industry) VALUES ('{industry_name}')")
             conn.commit()
         industry_id = conn.execute(f"SELECT industry_id FROM industry WHERE industry = '{industry_name}'")
+        conn.commit()   # attemping to fix db locked error
         industry_id = industry_id.fetchall()
-        self.industry_id = industry_id[0]   # not quite sure if this is how this should work.
+        self.industry_id = industry_id[0][0]   # not quite sure if this is how this should work.
 
     def check_sector(self, sector, conn):
         '''This method takes the sector given as an input and checks to see if it exists in the database. If it does not already exist in the database, it adds it to the database.'''
@@ -48,15 +49,16 @@ class Stock:
         # if the sector is not found, we add it to the db
         x = False
         for i in sectors:
-            if i == sectors:
+            if i[0] == sectors:
                 x = True
                 break
         if x is False:
             conn.execute(f"INSERT INTO sector (sector) VALUES ('{sector}')")
             conn.commit()
         sector_id = conn.execute(f"SELECT sector_id FROM sector WHERE sector = '{sector}'")
+        conn.commit()   # see above.
         sector_id = sector_id.fetchall()
-        self.sector_id = sector_id[0]
+        self.sector_id = sector_id[0][0]
 
 class Price:
 
