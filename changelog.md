@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 04/11/2021 18:08
+The get_price_history_loop.py file is working now, although I haven't tested to see how it handles problematic data fetched from yfinance (or no data). Going to commit/push, then attempt to run this on my Raspberry Pi overnight to see when it crashes, or if it is robust enough to leave running for now to collect data.
+
 ## 04/11/2021 16:14
 Code for the get_price_history_loop file not yet test-run. Changes I'd like to add before finalizing it are below.
 
