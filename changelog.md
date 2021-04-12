@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 04/11/2021 22:38
+Ran into an issue w/ a symbol when running on the Raspberry Pi. Since the symbol is over 200 entries in, I didn't want to watch my laptop for that long, so I added a feature that allows the script to continue from where it left off when it stops or crashes (using a pickle). I'm planning on using the pickle created right before the crash to do some additional debugging on my actual desktop or laptop, which is a bit easier than doing it on a Raspberry Pi accessed via VNC. NOTE: Need to figure out a better way to move the database file around. It will quickly outgrow what github will handle.
+
 ## 04/11/2021 18:08
 The get_price_history_loop.py file is working now, although I haven't tested to see how it handles problematic data fetched from yfinance (or no data). Going to commit/push, then attempt to run this on my Raspberry Pi overnight to see when it crashes, or if it is robust enough to leave running for now to collect data.
 

@@ -14,6 +14,7 @@ import yfinance as yf
 import datetime
 import time
 import pandas as pd
+import pickle
 
 # create an SQLite db connection
 conn = sqlite3.connect('stockPrediction.db')
@@ -35,10 +36,26 @@ stock_id_dict = dict()  # keys are ticker symbols, vals are the ID #
 for x in dbq:
     stock_id_dict[x[1]] = x[0]
 
+try:
+    infile = open('gphl_symbol', 'rb')
+    pickle_symbol = pickle.load(infile)
+    pickle_symbol_read = False
+except:
+    pickle_symbol = None
+    pickle_symbol_read = True
+
 while True:
 
     for symbol in db_symbols:
-        
+
+        # first, check to see if we have a last symbol stored in a pickle    
+        if pickle_symbol_read is False:
+            if symbol == pickle_symbol.symbol:
+                pickle_symbol_read = True
+                continue
+            else:
+                continue
+
         # template for the DB query for writing new data to the db
         price_history_query = "INSERT INTO price_history (stock_id, price_datetime, open_price, high_price, low_price, close_price, volume, dividends, stock_splits, datetime_added) VALUES "
 
@@ -97,6 +114,12 @@ while True:
         price_history_query = price_history_query[:-1]
         price_history_query = price_history_query + ";"
 
+
+        # pickle, for restarting the loop if it crashes
+        outfile = open('gphl_symbol', 'wb')
+        pickle.dump(symbol,outfile)
+        outfile.close()
+
         # execute the query
         if new_data > 0:
             conn.execute(price_history_query)
@@ -106,6 +129,8 @@ while True:
         print(new_data, " new entries added.")
         print(redundant_data, " redundant entries, not added.")
         print('Data added', datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+        # outfile.open()
 
         # delay to help us not get banned from yf
         time.sleep(5)
