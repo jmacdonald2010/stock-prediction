@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 04/12/2021 20:32
+I think I made some progress regarding my crashes issue? For some reason an extra column is getting added where it shouldn't be. Going to try just taking the values as a pandas df and just appending it to the sqlite3 table. Will first attempt to do this in the sketches notebook.
+
 ## 04/11/2021 22:38
 Ran into an issue w/ a symbol when running on the Raspberry Pi. Since the symbol is over 200 entries in, I didn't want to watch my laptop for that long, so I added a feature that allows the script to continue from where it left off when it stops or crashes (using a pickle). I'm planning on using the pickle created right before the crash to do some additional debugging on my actual desktop or laptop, which is a bit easier than doing it on a Raspberry Pi accessed via VNC. NOTE: Need to figure out a better way to move the database file around. It will quickly outgrow what github will handle.
 

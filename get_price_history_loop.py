@@ -52,7 +52,6 @@ while True:
         if pickle_symbol_read is False:
             if symbol == pickle_symbol.symbol:
                 pickle_symbol_read = True
-                continue
             else:
                 continue
 
