@@ -1,5 +1,10 @@
 # Changelog for in-progress branch
 
+## 04/12/2021 21:37
+Figured out how to write my problematic symbol (BEBE) to my database. A few issues were present: some apparent formatting issues in my sqlite query, and some NaN values in the data. This was corrected by taking the data from yfinance in its original dataframe form, changing column names as needed for my database, adding the necessary information, and dealing with NaN values with sklearn's KNNImputer. I am now going to heavily rewrite the get_price_history_loop to implement these changes.
+
+I will also soon need to stop pushing my database to github b/c it's going to get too big. Will need to figure out something else when this happens.
+
 ## 04/12/2021 20:32
 I think I made some progress regarding my crashes issue? For some reason an extra column is getting added where it shouldn't be. Going to try just taking the values as a pandas df and just appending it to the sqlite3 table. Will first attempt to do this in the sketches notebook.
 
