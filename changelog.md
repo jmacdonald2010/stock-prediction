@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 04/12/2021 22:24
+Rewrote my get_price_history_loop.py file to use pandas to organize the data and write it to the database, while also using sklearn to deal with NaN values. The code ran past my problem symbol. Going to attempt running on Raspberry Pi overnight.
+
 ## 04/12/2021 21:37
 Figured out how to write my problematic symbol (BEBE) to my database. A few issues were present: some apparent formatting issues in my sqlite query, and some NaN values in the data. This was corrected by taking the data from yfinance in its original dataframe form, changing column names as needed for my database, adding the necessary information, and dealing with NaN values with sklearn's KNNImputer. I am now going to heavily rewrite the get_price_history_loop to implement these changes.
 

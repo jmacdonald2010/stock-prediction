@@ -15,6 +15,8 @@ import datetime
 import time
 import pandas as pd
 import pickle
+import numpy as np
+from sklearn.impute import KNNImputer
 
 # create an SQLite db connection
 conn = sqlite3.connect('stockPrediction.db')
@@ -50,13 +52,13 @@ while True:
 
         # first, check to see if we have a last symbol stored in a pickle    
         if pickle_symbol_read is False:
-            if symbol == pickle_symbol.symbol:
+            if symbol == pickle_symbol:
                 pickle_symbol_read = True
             else:
                 continue
 
         # template for the DB query for writing new data to the db
-        price_history_query = "INSERT INTO price_history (stock_id, price_datetime, open_price, high_price, low_price, close_price, volume, dividends, stock_splits, datetime_added) VALUES "
+        # price_history_query = "INSERT INTO price_history (stock_id, price_datetime, open_price, high_price, low_price, close_price, volume, dividends, stock_splits, datetime_added) VALUES "
 
         # collect price history data that already exists in the DB to avoid redundant data
         data_in_db = conn.execute(f'SELECT price_datetime FROM price_history WHERE stock_id = {stock_id_dict[symbol]}')
@@ -78,41 +80,59 @@ while True:
             auto_adjust = True
         )
 
-        symbol = Stock(symbol)
+        # add columns for datetime retrived and stock_ID
+        # for this test, stock_id is static b/c the symbol we're using is static
+        data['datetime_added'] = get_current_datetime()
+        data['stock_id'] = stock_id_dict[symbol]
+
+        # turns the datetime index to a column, so it's actually useful for us
+        data.reset_index(level=0, inplace=True)
+
+        # rename to match our db
+        data = data.rename(columns={
+            'Datetime': 'price_datetime',
+            'Open': 'open_price', 
+            'High': 'high_price', 
+            'Low': 'low_price',
+            'Close': 'close_price',
+            'Volume': 'volume',
+            'Dividends': 'dividends',
+            'Stock Splits': 'stock_splits'
+        })
+
+        # convert datetime values to string
+        data['price_datetime'] = data['price_datetime'].apply(lambda x: x.strftime("%Y-%m-%d %H:%M:%S"))
+
+        # fill in np.nan's
+        impute_columns = []
+        imputer = KNNImputer(n_neighbors=2, weights='uniform')
+        imputed_data = imputer.fit_transform(data[['open_price', 'high_price', 'low_price', 'close_price', 'volume', 'dividends']])
+        clean_data = pd.DataFrame(imputed_data, columns=['open_price', 'high_price', 'low_price', 'close_price', 'volume', 'dividends'])
+
+        # copy the cleaned data into our dataframe
+        data['open_price'] = clean_data['open_price']
+        data['high_price'] = clean_data['high_price']
+        data['low_price'] = clean_data['low_price']
+        data['close_price'] = clean_data['close_price']
+        data['volume'] = clean_data['volume']
+        data['dividends'] = clean_data['dividends']
+
+        # symbol = Stock(symbol)
 
         # variables to keep track of redundant data, new data when running this code
         new_data = 0
         redundant_data = 0
 
+        # loop thru the rows, checking to see if we would have duplicate price_datetime values
+        # if we do, then remove the row
         for row in data.itertuples():
             
-            # create a price object w/ the necessary arguments
-            price_data = Price(symbol, row[1], row[2], row[3], row[4], row[5], row[0], row[6], row[7])
-            # print(price_data)
-            # print("")
-
-            # convert the price_datetime 
-            price_data.price_datetime = price_data.price_datetime.strftime("%Y-%m-%d %H:%M:%S")
-
-            # if a prev_datetime is already in the DB, skip the iteration
-            if prev_datetimes.count(price_data.price_datetime) > 0:
+            if prev_datetimes.count(row[1]) > 0:
                 redundant_data += 1
-                continue
-
-            # this part of the loop will only run for new data
-            new_data += 1
-
-            # entry to get current datatime to add to the DB query
-            datetime_added = get_current_datetime()
-
-            # add the data to the query string
-            price_history_query = price_history_query + f"\n({stock_id_dict[symbol.symbol]}, '{price_data.price_datetime}', {price_data.open_price}, {price_data.high_price}, {price_data.low_price}, {price_data.close_price}, {price_data.volume}, {price_data.dividends}, '{price_data.stock_splits}', '{datetime_added}' ),"
-
-        # after the itertuples loop
-        # target the last line of the DB query, 
-        price_history_query = price_history_query[:-1]
-        price_history_query = price_history_query + ";"
-
+                data = data.drop(row.Index)
+                redundant_data += 1
+            else:
+                new_data += 1
 
         # pickle, for restarting the loop if it crashes
         outfile = open('gphl_symbol', 'wb')
@@ -121,10 +141,10 @@ while True:
 
         # execute the query
         if new_data > 0:
-            conn.execute(price_history_query)
+            data.to_sql('price_history', conn, if_exists='append', index=False)
             conn.commit()
 
-        print(symbol.symbol, " price history added to database.")
+        print(symbol, " price history added to database.")
         print(new_data, " new entries added.")
         print(redundant_data, " redundant entries, not added.")
         print('Data added', datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
