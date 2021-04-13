@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 04/13/2021 07:43
+Script crashed last night on symbol CEL due to no info on the symbol (possible delisting). Added in a few lines to deal w/ symbols w/ no data present (by skipping them). Commit/push and going to attempt to keep running on Raspberry Pi throughout the day.
+
 ## 04/12/2021 22:24
 Rewrote my get_price_history_loop.py file to use pandas to organize the data and write it to the database, while also using sklearn to deal with NaN values. The code ran past my problem symbol. Going to attempt running on Raspberry Pi overnight.
 

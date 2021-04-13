@@ -80,6 +80,11 @@ while True:
             auto_adjust = True
         )
 
+        if len(data) == 0:
+            print(f"No price history available for {symbol}, skipping to next.")
+            time.sleep(5)   # help not get us banned from yf
+            continue
+
         # add columns for datetime retrived and stock_ID
         # for this test, stock_id is static b/c the symbol we're using is static
         data['datetime_added'] = get_current_datetime()
