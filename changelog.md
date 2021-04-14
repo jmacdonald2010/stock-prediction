@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 04/13/2021 22:14
+Pi crashed on an error during the API call. Looks like it may be a problematic symbol in my data that has a slash in it. Not quite sure what happened there. Added a try/except block for the API call in order to skip over problematic symbols such as that one. 
+
 ## 04/13/2021 07:43
 Script crashed last night on symbol CEL due to no info on the symbol (possible delisting). Added in a few lines to deal w/ symbols w/ no data present (by skipping them). Commit/push and going to attempt to keep running on Raspberry Pi throughout the day.
 

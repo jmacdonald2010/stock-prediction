@@ -72,13 +72,17 @@ while True:
         sixty_days_ago = (datetime.datetime.now() - datetime.timedelta(days=59)).strftime("%Y-%m-%d")
 
         # API call
-        data = yf.Ticker(symbol)
-        data = data.history(
-            start = sixty_days_ago,
-            end = current_date,
-            interval = '15m',
-            auto_adjust = True
-        )
+        try:
+            data = yf.Ticker(symbol)
+            data = data.history(
+                start = sixty_days_ago,
+                end = current_date,
+                interval = '15m',
+                auto_adjust = True
+            )
+        except:
+            print(f'Error processing symbol {symbol}. Skipping to next symbol')
+            continue
 
         if len(data) == 0:
             print(f"No price history available for {symbol}, skipping to next.")
@@ -86,7 +90,6 @@ while True:
             continue
 
         # add columns for datetime retrived and stock_ID
-        # for this test, stock_id is static b/c the symbol we're using is static
         data['datetime_added'] = get_current_datetime()
         data['stock_id'] = stock_id_dict[symbol]
 
