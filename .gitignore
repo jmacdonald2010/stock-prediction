@@ -10,3 +10,4 @@ getPriceHistory_yfinance.ipynb
 .DS_store
 allUnderFiveDollarsAndPrevOwned - Copy.txt
 stockPrediction.db
+TDS_predictMultipleTickers.pdf
