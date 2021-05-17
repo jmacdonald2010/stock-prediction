@@ -11,3 +11,4 @@ getPriceHistory_yfinance.ipynb
 allUnderFiveDollarsAndPrevOwned - Copy.txt
 stockPrediction.db
 TDS_predictMultipleTickers.pdf
+reddit_auth.py
