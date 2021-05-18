@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 05/17/2021 22:30
+I think I know what I need to do to get this to work properly. Need to in the cell where the minmax objects are defined, place the symbol I want to predict as the single one, and DON'T add that one to the regular minmax object. Go from here w/ training, predictions, etc. Hopefully.
+
 ## 05/16/2021 12:56
 Going to change the way some things are set up for the actual ML code. My data is slightly different now (using the clean_df dataframe for the ML dataset). Committing just in case I mess it up quite badly.
 
