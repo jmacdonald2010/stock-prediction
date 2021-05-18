@@ -1,7 +1,7 @@
-# Changelog for pull-from-reddit-api-01
+# Changelog for EOD-price-gathering-01
 
-## 05/17/2021 22:06
-Assembles a basic list (and dict) of what people on reddit are talking about. Merging to in-progress as it may be useful later.
+## Goal
+Goal is to update the get_price_history_loop.py script to not only get 15 min. intraday history, but also EOD history going back indefinetly. It will take a long time before I have enough intraday 15-min. price history to make any accurate predictions, so I will use EOD prices in the meantime.
 
-## 05/16/2021 20:19
-The goal of this is to pull stock symbols from comments on reddit posts from certain reddits to see what people are talking about. Currently it works to assemble a list of symbols, just needs to clean up the list a bit more, which means digging out the regex reference materials.
+## 05/18/2021 09:35
+Started the notebook. More work to be done on it. Commit prior to going to work.
