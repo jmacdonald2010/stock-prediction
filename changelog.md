@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 05/18/2021 08:18
+Deleted a bunch of cells to tidy up. Still running into errors in the prediction part of the notebook due to array shapes.
+
 ## 05/17/2021 22:30
 I think I know what I need to do to get this to work properly. Need to in the cell where the minmax objects are defined, place the symbol I want to predict as the single one, and DON'T add that one to the regular minmax object. Go from here w/ training, predictions, etc. Hopefully.
 
