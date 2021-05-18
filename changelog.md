@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 05/18/2021 08:49
+A lot of cleanup left to do with this notebook. Made it to the end of the tutorial, but my results are wildly off. Not sure if my dataset is just that much more limited or if something else is the issue. I may try redoing this using end of day closing prices instead of 15 min. intraday prices.
+
 ## 05/18/2021 08:18
 Deleted a bunch of cells to tidy up. Still running into errors in the prediction part of the notebook due to array shapes.
 
