@@ -5,3 +5,6 @@ Goal is to update the get_price_history_loop.py script to not only get 15 min. i
 
 ## 05/18/2021 09:35
 Started the notebook. More work to be done on it. Commit prior to going to work.
+
+### 21:56
+Basic functionality almost works. Placing it all into an actual .py file for easier debugging.
