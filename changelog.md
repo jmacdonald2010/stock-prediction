@@ -8,3 +8,6 @@ Started the notebook. More work to be done on it. Commit prior to going to work.
 
 ### 21:56
 Basic functionality almost works. Placing it all into an actual .py file for easier debugging.
+
+### 22:19
+Basic functionality seems to work. Going to try running it on a raspberry pi overnight and throughout the day to see if it crashes. Will merge once confirmed successful.
