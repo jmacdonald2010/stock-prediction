@@ -3,6 +3,9 @@
 ## 05/22/2021 21:39
 Attempted training a model w/ 20 epochs. Running into an issue where the imputing creates massive spikes in the data, need to attempt to adjust the imputer.
 
+### 23:13
+I distinctly remember writing code that filtered out the weird times (not an even 15 minute interval), but for some reason, that code is now gone and not a part of any of my prior commits. Going to have to try to rewrite it unfortunately, as that is what seems to be causing a lot of the 'spikiness' in my data, which is throwing off my model/predictions.
+
 ## 05/18/2021 08:49
 A lot of cleanup left to do with this notebook. Made it to the end of the tutorial, but my results are wildly off. Not sure if my dataset is just that much more limited or if something else is the issue. I may try redoing this using end of day closing prices instead of 15 min. intraday prices.
 
