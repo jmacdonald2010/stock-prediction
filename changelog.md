@@ -3,6 +3,9 @@
 ## 05/23/2021 20:54
 Added in a few code cells that contain the necessary code to filter out the weird time values. Will organize a bit more in the next commit.
 
+### 22:00
+Running into an odd issue where when I split my data into training/test it gets all messed up and inaccurate. Going to work w/ finding a better way of taking my original dataframe and creating my test/train data sets out of it.
+
 ## 05/22/2021 21:39
 Attempted training a model w/ 20 epochs. Running into an issue where the imputing creates massive spikes in the data, need to attempt to adjust the imputer.
 
