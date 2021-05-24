@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 05/23/2021 20:54
+Added in a few code cells that contain the necessary code to filter out the weird time values. Will organize a bit more in the next commit.
+
 ## 05/22/2021 21:39
 Attempted training a model w/ 20 epochs. Running into an issue where the imputing creates massive spikes in the data, need to attempt to adjust the imputer.
 
