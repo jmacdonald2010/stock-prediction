@@ -220,5 +220,5 @@ while True:
 
     for symbol in db_symbols:
 
-        #pickle_symbol_read = get_price_history(symbol, conn, period='15min', pickle_symbol_read=pickle_symbol_read)
+        pickle_symbol_read = get_price_history(symbol, conn, period='15min', pickle_symbol_read=pickle_symbol_read)
         pickle_symbol_read = get_price_history(symbol, conn, period='eod', pickle_symbol_read=pickle_symbol_read)
