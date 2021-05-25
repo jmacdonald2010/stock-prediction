@@ -79,7 +79,7 @@ def get_price_history(symbol, conn, period='15min', pickle_symbol_read=True):
     # collect price history data that already exists in the DB to avoid redundant data
     # determine if 15min or eod
     if period == '15min':
-        data_in_db = conn.execute(f'SELECT price_datetime FROM eod_price_history WHERE stock_id = {stock_id_dict[symbol]}')
+        data_in_db = conn.execute(f'SELECT price_datetime FROM price_history WHERE stock_id = {stock_id_dict[symbol]}')
         conn.commit()
         current_date = datetime.datetime.now().strftime("%Y-%m-%d")
         sixty_days_ago = (datetime.datetime.now() - datetime.timedelta(days=59)).strftime("%Y-%m-%d")
@@ -198,7 +198,10 @@ def get_price_history(symbol, conn, period='15min', pickle_symbol_read=True):
 
     # execute the query
     if new_data > 0:
-        data.to_sql('price_history', conn, if_exists='append', index=False)
+        if period=='15min':
+            data.to_sql('price_history', conn, if_exists='append', index=False)
+        elif period=='eod':
+            data.to_sql('eod_price_history', conn, if_exists='append', index=False)
         conn.commit()
 
     print(symbol, " price history added to database.")
@@ -217,5 +220,5 @@ while True:
 
     for symbol in db_symbols:
 
-        pickle_symbol_read = get_price_history(symbol, conn, period='15min', pickle_symbol_read=pickle_symbol_read)
+        #pickle_symbol_read = get_price_history(symbol, conn, period='15min', pickle_symbol_read=pickle_symbol_read)
         pickle_symbol_read = get_price_history(symbol, conn, period='eod', pickle_symbol_read=pickle_symbol_read)
