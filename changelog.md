@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 05/25/2021 19:15
+Now running into issues with my data just removing the bad intraday datetimes. No idea why this is now happening, could've sworn it was working correctly on 5/23. Going to create a new notebook to work w/ EOD values, as they may be more predictable. The mlTests02 notebook will be abandoned, and is currently an unusable mess.
+
 ## 05/23/2021 20:54
 Added in a few code cells that contain the necessary code to filter out the weird time values. Will organize a bit more in the next commit.
 
