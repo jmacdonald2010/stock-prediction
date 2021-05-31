@@ -9,6 +9,9 @@ Sorted out the 12:24 error. Prediction is now full of NaN's. Likely due to NaNs 
 ### 12:59
 Resolved the above error. Now able to predict symbols. Now need to work on finetuning the model and all of that.
 
+### 14:52
+Predictions on FCEL seem to be working pretty well. Going to rewrite some code to make it easier to try this with other symbols.
+
 ## 05/26/2021 22:50
 Started work on the eod notebook. 
 
