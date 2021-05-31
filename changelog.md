@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 05/31/2021 12:24
+Running into errors in the end, when inverting the transformed data back into a normal readable format. Not sure why this error is occuring.
+
 ## 05/26/2021 22:50
 Started work on the eod notebook. 
 
