@@ -6,6 +6,9 @@ Running into errors in the end, when inverting the transformed data back into a 
 ### 12:40
 Sorted out the 12:24 error. Prediction is now full of NaN's. Likely due to NaNs in training data, which need resolved. Investigating this error.
 
+### 12:59
+Resolved the above error. Now able to predict symbols. Now need to work on finetuning the model and all of that.
+
 ## 05/26/2021 22:50
 Started work on the eod notebook. 
 
