@@ -15,6 +15,9 @@ Predictions on FCEL seem to be working pretty well. Going to rewrite some code t
 ### 14:57
 Adjusted some code so you can easily plug your symbol of choice in somewhere and go from there.
 
+### 16:10
+Overall, needs a fair bit of work. Seems to only really predict FCEL moderately accurately and only from 2019 to present. Other symbols do not fare as well.
+
 ## 05/26/2021 22:50
 Started work on the eod notebook. 
 

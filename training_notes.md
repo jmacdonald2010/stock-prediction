@@ -116,4 +116,5 @@ for i in training_data.columns:
 - 90/10 train test split.
 - Layers: 2
 - Date Range: 2019 - Present.
+- Sector and Industry IDs in common w/ FCEL
 - Epochs changed to 20 from 10. Resulting prediction on FCEL is actually best so far. Is slightly lower than the real data, but is much closer in the descending price of FCEL. Need to try with some other symbols.
