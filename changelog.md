@@ -12,6 +12,9 @@ Resolved the above error. Now able to predict symbols. Now need to work on finet
 ### 14:52
 Predictions on FCEL seem to be working pretty well. Going to rewrite some code to make it easier to try this with other symbols.
 
+### 14:57
+Adjusted some code so you can easily plug your symbol of choice in somewhere and go from there.
+
 ## 05/26/2021 22:50
 Started work on the eod notebook. 
 
