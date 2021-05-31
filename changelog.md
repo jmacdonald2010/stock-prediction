@@ -3,6 +3,9 @@
 ## 05/31/2021 12:24
 Running into errors in the end, when inverting the transformed data back into a normal readable format. Not sure why this error is occuring.
 
+### 12:40
+Sorted out the 12:24 error. Prediction is now full of NaN's. Likely due to NaNs in training data, which need resolved. Investigating this error.
+
 ## 05/26/2021 22:50
 Started work on the eod notebook. 
 
