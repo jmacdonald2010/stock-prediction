@@ -3,6 +3,10 @@
 ## 06/02/2021 07:55
 Made an absolute mess of my EOD notebook, but that is due to attempting to train models and increase accuracy. Going to write a script that will detail how everything is, save charts, MSE values, and model parameters.
 
+### 08:23 
+
+Started working on a loop to create plots and evaluate MSE values.
+
 ## 05/31/2021 12:24
 Running into errors in the end, when inverting the transformed data back into a normal readable format. Not sure why this error is occuring.
 
