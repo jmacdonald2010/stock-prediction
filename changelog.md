@@ -7,6 +7,9 @@ Made an absolute mess of my EOD notebook, but that is due to attempting to train
 
 Started working on a loop to create plots and evaluate MSE values.
 
+### 20:26
+Finished writing the script that runs the whole notebook, trains a model, and predicts some symbols. Looks like 100 epochs is more accurate than 200.
+
 ## 05/31/2021 12:24
 Running into errors in the end, when inverting the transformed data back into a normal readable format. Not sure why this error is occuring.
 

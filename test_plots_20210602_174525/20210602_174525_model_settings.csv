@@ -1,0 +1,6 @@
+,0
+epochs,200
+batch_size,32
+train_test_ratio,0.7
+start_date,2019-01-01
+end_date,2021-06-02
