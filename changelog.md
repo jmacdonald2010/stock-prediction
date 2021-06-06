@@ -1,5 +1,9 @@
 # Changelog for in-progress branch
 
+## 06/06/2021 18:23
+
+Ran a few runs of the automated script. So far, it looks like 100 epochs starting from 2019 to present provides the lowest MSE for a selection of ticker symbols. Will likely continue to try training with 100 epochs, but may also attempt to get official data on smaller amounts of epochs (1-10). Will attempt to work with how many layers I'm using along with altering other settings.
+
 ## 06/02/2021 07:55
 Made an absolute mess of my EOD notebook, but that is due to attempting to train models and increase accuracy. Going to write a script that will detail how everything is, save charts, MSE values, and model parameters.
 
