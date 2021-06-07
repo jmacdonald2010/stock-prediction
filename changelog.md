@@ -1,5 +1,13 @@
 # Changelog for in-progress branch
 
+## 06/07/2021 08:46
+
+New model finished training using a batch size of 2. Some MSE values were better, some slightly worse than with 4, but the movement of the predicted prices is largely static, so I wouldn't consider it to be terribly reliable. So far 20210606_153456 is the most accurate, and I may use this for potential predictions soon.
+
+### To Do:
+
+Clean up the notebook, or make a new one that does what it needs to do.
+
 ## 06/06/2021 18:23
 
 Ran a few runs of the automated script. So far, it looks like 100 epochs starting from 2019 to present provides the lowest MSE for a selection of ticker symbols. Will likely continue to try training with 100 epochs, but may also attempt to get official data on smaller amounts of epochs (1-10). Will attempt to work with how many layers I'm using along with altering other settings.
