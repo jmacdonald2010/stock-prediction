@@ -8,6 +8,9 @@ Ran a few runs of the automated script. So far, it looks like 100 epochs startin
 
 Overall best MSE results are now w/ the model for 20210606_153456. 2020 to present, 100 units instead of 20. 
 
+### 22:34
+Using a batch size of 4 has created the most accurate model so far. Took six hours to train. May try another one that is an even smaller batch size, just to see if it's any more accurate. This model is model_20210606_163712. 
+
 ## 06/02/2021 07:55
 Made an absolute mess of my EOD notebook, but that is due to attempting to train models and increase accuracy. Going to write a script that will detail how everything is, save charts, MSE values, and model parameters.
 
