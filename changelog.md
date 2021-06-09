@@ -1,5 +1,9 @@
 # Changelog for in-progress branch
 
+## 06/09/2021 06:31
+
+Model w/ additional data has finished training. Unsure of its accuracy yet, has not been tested. Commit/push prior to work.
+
 ## 06/07/2021 08:46
 
 New model finished training using a batch size of 2. Some MSE values were better, some slightly worse than with 4, but the movement of the predicted prices is largely static, so I wouldn't consider it to be terribly reliable. So far 20210606_153456 is the most accurate, and I may use this for potential predictions soon.
