@@ -1,5 +1,9 @@
 # Changelog for in-progress branch
 
+## 06/10/2021 16:12
+
+For future prediction cells: adds new datetime values to the index for the next 30 days.
+
 ## 06/09/2021 06:31
 
 Model w/ additional data has finished training. Unsure of its accuracy yet, has not been tested. Commit/push prior to work.
