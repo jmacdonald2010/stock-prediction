@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 06/13/2021 19:44
+Attempting to use a new tutorial as the basis for my machine learning model. Running into data shaping issues.
+
 ## 06/10/2021 16:12
 
 For future prediction cells: adds new datetime values to the index for the next 30 days.
