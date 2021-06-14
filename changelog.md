@@ -3,6 +3,9 @@
 ## 06/13/2021 19:44
 Attempting to use a new tutorial as the basis for my machine learning model. Running into data shaping issues.
 
+### 20:41
+Got it so the data would shape properly and the model would begin to train. Getting nan loss values during training, so need to try to find the NaN values in the arrays.
+
 ## 06/10/2021 16:12
 
 For future prediction cells: adds new datetime values to the index for the next 30 days.
