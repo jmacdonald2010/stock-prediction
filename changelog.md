@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 06/17/2021 20:30
+Caused a lot of damage to my notebook, committing prior to solidifying a lot of it but I think I may have figured it out partially?
+
 ## 06/13/2021 19:44
 Attempting to use a new tutorial as the basis for my machine learning model. Running into data shaping issues.
 
