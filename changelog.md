@@ -3,6 +3,9 @@
 ## 06/18/2021 15:48
 I was wrong yesterday, had not figured it out, ended up throwing a lot of methaphorical spaghetti at the wall. Realized today I only want to predict one symbol at a time using a model training on various tickers. Because of this, I am using a univariate model. Current progress is in the bottom of mlTests05. About to work on fixing the date index for the predicted dataframe. 
 
+### 18:41
+Created a test file. Going to try to leave it running endlessly on an older machine of mine, so I can use my desktop or newest laptop for other things. Will report back w/ whatever errors I encounter.
+
 ## 06/17/2021 20:30
 Caused a lot of damage to my notebook, committing prior to solidifying a lot of it but I think I may have figured it out partially?
 
