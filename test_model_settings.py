@@ -160,7 +160,8 @@ for i in epochs:
             # create a folder to save this all in
             directory = f"test_plots_{current_datetime}"
             # change the parent_dir when running on different machines
-            parent_dir = r"C:\Users\james\Dropbox\Box Sync\code\stockPrediction"
+            # parent_dir = r"C:\Users\james\Dropbox\Box Sync\code\stockPrediction"
+            parent_dir = r"/Users/jamesmacdonald/Dropbox/Box Sync/code/stockPrediction"
             path = os.path.join(parent_dir, directory)
             os.mkdir(path)
             print('Directory made.')

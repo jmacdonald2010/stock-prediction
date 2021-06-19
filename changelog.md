@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 06/19/2021 09:57
+Figured out my predictions errors. Didn't realize that the n_steps_in variable is also how many data points you feed the model when attempting to predict. Right now, a lot of the predictions look the same, but also the model is barely trained. Deleted a lot of the old things from this notebook to clean it up. test_model_settings.py file is not yet ready to use, needs the fixes implemented in the mlTests05 notebook first.
+
 ## 06/18/2021 15:48
 I was wrong yesterday, had not figured it out, ended up throwing a lot of methaphorical spaghetti at the wall. Realized today I only want to predict one symbol at a time using a model training on various tickers. Because of this, I am using a univariate model. Current progress is in the bottom of mlTests05. About to work on fixing the date index for the predicted dataframe. 
 
