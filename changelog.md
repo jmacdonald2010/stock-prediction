@@ -3,6 +3,9 @@
 ## 06/26/2021 11:37
 Going back to the first ML idea I was working from (based on the mlTests03 notebook, which is since abandoned due to its messy state). Now using mlTests06 to use the original idea, which is much more accurate (likely due to a scaling issue w/ MinMaxScaler), and trains more quickly. Now trying to make it predict values beyond just the test set.
 
+### 14:07
+Finding some direction. Need to work w/ my input data and minimizing loss. Going to try changing the n_lags value from 60 to something lower (which I think works as a sort of n_steps_in value?). Eventually will change it into a script to work with minimizing loss.
+
 ## 06/19/2021 09:57
 Figured out my predictions errors. Didn't realize that the n_steps_in variable is also how many data points you feed the model when attempting to predict. Right now, a lot of the predictions look the same, but also the model is barely trained. Deleted a lot of the old things from this notebook to clean it up. test_model_settings.py file is not yet ready to use, needs the fixes implemented in the mlTests05 notebook first.
 
