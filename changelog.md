@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 06/27/2021 13:54
+Looks like 50 epochs seems to do the best. Not accounting for massive random changes in price history, the model does a decent job following trends. Commit/Push prior to updating the mlTests06 notebook to predict w/o validation on the most recent data I have.
+
 ## 06/26/2021 11:37
 Going back to the first ML idea I was working from (based on the mlTests03 notebook, which is since abandoned due to its messy state). Now using mlTests06 to use the original idea, which is much more accurate (likely due to a scaling issue w/ MinMaxScaler), and trains more quickly. Now trying to make it predict values beyond just the test set.
 
