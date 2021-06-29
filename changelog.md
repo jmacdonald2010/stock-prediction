@@ -3,6 +3,9 @@
 ## 06/28/2021 20:12
 Tried training just one symbol at a time. Changed a notebook/python script file (uses VS Code's jupyter extension, # %% for new cells) to just to single-symbol prediction, and it has the best MSE overall. Going to likely use this moving forward. This also means that I can just call data from yfinance instead of keeping a database. Also will mean I may be able to do intraday.
 
+### 21:53
+Need to figure out how to properly implement the accuracy callback. Running into data shaping issues w/ my test data. 
+
 ## 06/27/2021 13:54
 Looks like 50 epochs seems to do the best. Not accounting for massive random changes in price history, the model does a decent job following trends. Commit/Push prior to updating the mlTests06 notebook to predict w/o validation on the most recent data I have.
 

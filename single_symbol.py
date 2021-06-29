@@ -19,9 +19,42 @@ from tensorflow.keras.layers import RepeatVector
 from tensorflow.keras.layers import TimeDistributed
 from tensorflow.keras.layers import Dropout
 from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import Callback
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import MinMaxScaler
 import yfinance as yf
+
+class new_callback(Callback):
+    # courtesy of stackoverflow user Suvo, https://stackoverflow.com/questions/37293642/how-to-tell-keras-stop-training-based-on-loss-value
+    def on_epoch_end(self, epoch, logs={}):
+        if (logs.get('accuracy') > .90):
+            print("90% Accuracy, stop training!")
+            self.model.stop_training = True
+
+def split_sequence(sequence, n_steps_in, n_steps_out):
+    X, y = list(), list()
+    for i in range(len(sequence)):
+        # find end of pattern
+        end_ix = i + n_steps_in
+        out_end_ix = end_ix + n_steps_out
+        # check to see if we're beyond the sequence
+        if out_end_ix > len(sequence):
+            break
+        # gather input, output parts of pattern
+        seq_x, seq_y = sequence[i:end_ix], sequence[end_ix:out_end_ix]
+        X.append(seq_x)
+        y.append(seq_y)
+    return np.array(X), np.array(y)
+
+def prep_data(data, n_steps_in, n_steps_out):
+    # data is a dataframe w/ one column
+    # df = data.to_frame()
+    # symbol = df.columns[0]
+    # scaler_dict[symbol] = MinMaxScaler(feature_range=(0,1))
+    # scaled = scaler_dict[symbol].fit_transform(df.values)
+    X, y = split_sequence(data.to_numpy(), n_steps_in, n_steps_out)
+    X = X.reshape((X.shape[0], X.shape[1], 1))
+    return X, y
 
 # settings
 # good universal set of settings, at least for RSSS
@@ -30,7 +63,8 @@ current_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
 # settings to mess w/
 # uncomment, comment as needed
-model_settings = {'epochs': 2000, 'batch_size': 100, 'train_test_ratio': 0.7, 'hidden_layers': 3, 'units': 200, 'start_date': '2020-01-01', 'n_steps_in': 5, 'n_steps_out': 30, 'symbol': 'RSSS'}
+# 5 steps in is best for EOD, 30 steps out
+model_settings = {'epochs': 2000, 'batch_size': 100, 'train_test_ratio': 0.7, 'hidden_layers': 3, 'units': 200, 'start_date': '2020-01-01', 'n_steps_in': 5, 'n_steps_out': 30, 'symbol': 'SID', 'start_date': '2020-01-01', 'interval': '1d'}
 
 # load and shape data
 '''conn = sqlite3.connect('stockPrediction_062721.db')
@@ -56,11 +90,15 @@ df = df.set_index(['price_datetime', 'stock_symbol']).unstack(['stock_symbol'])
 
 df = df.loc[model_settings['start_date']:current_date]  # date range from 2019-01-01 to 2021-05-31'''
 
+# can't remember all intraday time intervals for the model settings
+if model_settings['interval'] in ['1m', '5m', '10m', '15m', '30m', '1hr']:
+    model_settings['start_date'] = (datetime.datetime.now() - datetime.timedelta(days=59)).strftime("%Y-%m-%d")
+
 df = yf.Ticker(model_settings['symbol'])
 df = df.history(
-    start= '2020-01-01',
+    start= model_settings['start_date'],
     end = current_date,
-    interval= '1d',
+    interval= model_settings['interval'],
     auto_adjust= True
 )
 
@@ -68,7 +106,9 @@ df = df.history(
 
 close_df = df['Close'].to_frame()
 
-close_df = close_df.fillna(method='ffill', axis=1)
+print(close_df.isna().sum())
+
+# close_df = close_df.fillna(method='ffill', axis=1)
 
 # remove outliers
 '''low_outlier = close_df.quantile(.1, axis=1).quantile(.1)
@@ -80,39 +120,6 @@ columns = [i for i in close_df.columns]'''
 close_df
 
 
-# %%
-# func to split the time sequence into samples
-def split_sequence(sequence, n_steps_in, n_steps_out):
-    X, y = list(), list()
-    for i in range(len(sequence)):
-        # find end of pattern
-        end_ix = i + n_steps_in
-        out_end_ix = end_ix + n_steps_out
-        # check to see if we're beyond the sequence
-        if out_end_ix > len(sequence):
-            break
-        # gather input, output parts of pattern
-        seq_x, seq_y = sequence[i:end_ix], sequence[end_ix:out_end_ix]
-        X.append(seq_x)
-        y.append(seq_y)
-    return np.array(X), np.array(y)
-
-
-# %%
-# normalize data
-# here will go the function that will prepare the X, y data when fitting the model
-# normalize, split_sequence, reshape
-# global scaler_dict
-# scaler_dict = {}
-def prep_data(data, n_steps_in, n_steps_out):
-    # data is a dataframe w/ one column
-    # df = data.to_frame()
-    # symbol = df.columns[0]
-    # scaler_dict[symbol] = MinMaxScaler(feature_range=(0,1))
-    # scaled = scaler_dict[symbol].fit_transform(df.values)
-    X, y = split_sequence(data.to_numpy(), n_steps_in, n_steps_out)
-    X = X.reshape((X.shape[0], X.shape[1], 1))
-    return X, y
 
 
 # %%
@@ -135,6 +142,10 @@ training_data_scaled = scaler.fit_transform(training_data.to_numpy())
 
 training_data_scaled = pd.DataFrame(training_data_scaled)
 
+test_data_scaled = scaler.transform(test_data.to_numpy())
+test_data_scaled = pd.DataFrame(test_data_scaled)
+print(test_data_scaled.describe())
+
 # comment out the below line if you want a specific number of predictions, this is mainly useful to see test vs predicted data
 model_settings['n_steps_out'] = len(test_data)
 
@@ -145,17 +156,23 @@ model = Sequential()
 model.add(LSTM(200, activation='relu', return_sequences=True, input_shape=(model_settings['n_steps_in'], 1)))
 model.add(LSTM(200, activation='relu'))
 model.add(Dense(model_settings['n_steps_out']))
-model.compile(optimizer='adam', loss='mse')
+model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
+# model.compile(optimizer='adam', loss='mse')
 
-callbacks = [EarlyStopping(monitor='loss', patience=45)]
 
+# callbacks = [EarlyStopping(monitor='loss', patience=45)]
+callbacks = [new_callback()]
 
 # %%
 # fit model
 
 # print('Symbol: ', symbol)
 x_train, y_train = prep_data(training_data_scaled, model_settings['n_steps_in'], model_settings['n_steps_out'])
-model.fit(x_train, y_train, batch_size=model_settings['batch_size'], epochs=model_settings['epochs'], verbose=1, shuffle=True, callbacks=callbacks)
+# x_train, y_train = prep_data(training_data, model_settings['n_steps_in'], model_settings['n_steps_out'])
+
+x_test, y_test = prep_data(test_data_scaled, model_settings['n_steps_in'], model_settings['n_steps_out'])
+
+model.fit(x_train, y_train, batch_size=model_settings['batch_size'], epochs=model_settings['epochs'], verbose=1, shuffle=True, callbacks=callbacks, validation_data=(x_test, y_test), validation_steps=1)
 
 
 # %%
@@ -185,6 +202,16 @@ test_data = test_data.reset_index()
 
 predicted['price_datetime'] = test_data['Date']
 test_data = test_data.set_index('Date')
+predicted = predicted.set_index('price_datetime')
+
+# %%
+# prep a dataframe for predictions, for intraday data
+yhat = yhat.reshape((-1))
+predicted = pd.DataFrame(yhat, columns=[symbol])
+test_data = test_data.reset_index()
+
+predicted['price_datetime'] = test_data['Datetime']
+test_data = test_data.set_index('Datetime')
 predicted = predicted.set_index('price_datetime')
 
 # %%
@@ -287,3 +314,8 @@ training_data = training_data.set_index('Date')
 
 predicted = predicted.set_index('Date')
 predicted = predicted.dropna()
+
+# %%
+df['Close'].plot()
+# %%
+close_df.plot()
