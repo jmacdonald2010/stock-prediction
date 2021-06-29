@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 06/29/2021 19:48
+The single_symbol file is in a place that seems like it mostly works. Also working on a new script that will retrain and find the best n_steps_in to use. The optimization algorithm for that is still in progress.
+
 ## 06/28/2021 20:12
 Tried training just one symbol at a time. Changed a notebook/python script file (uses VS Code's jupyter extension, # %% for new cells) to just to single-symbol prediction, and it has the best MSE overall. Going to likely use this moving forward. This also means that I can just call data from yfinance instead of keeping a database. Also will mean I may be able to do intraday.
 

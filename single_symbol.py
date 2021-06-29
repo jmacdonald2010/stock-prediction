@@ -20,6 +20,7 @@ from tensorflow.keras.layers import TimeDistributed
 from tensorflow.keras.layers import Dropout
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.callbacks import Callback
+from tensorflow.keras import metrics
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import MinMaxScaler
 import yfinance as yf
@@ -27,9 +28,10 @@ import yfinance as yf
 class new_callback(Callback):
     # courtesy of stackoverflow user Suvo, https://stackoverflow.com/questions/37293642/how-to-tell-keras-stop-training-based-on-loss-value
     def on_epoch_end(self, epoch, logs={}):
-        if (logs.get('accuracy') > .90):
+        if (logs.get('mse') < .002):
             print("90% Accuracy, stop training!")
             self.model.stop_training = True
+            return
 
 def split_sequence(sequence, n_steps_in, n_steps_out):
     X, y = list(), list()
@@ -64,7 +66,7 @@ current_date = datetime.datetime.now().strftime("%Y-%m-%d")
 # settings to mess w/
 # uncomment, comment as needed
 # 5 steps in is best for EOD, 30 steps out
-model_settings = {'epochs': 2000, 'batch_size': 100, 'train_test_ratio': 0.7, 'hidden_layers': 3, 'units': 200, 'start_date': '2020-01-01', 'n_steps_in': 5, 'n_steps_out': 30, 'symbol': 'SID', 'start_date': '2020-01-01', 'interval': '1d'}
+model_settings = {'epochs': 2000, 'batch_size': 100, 'train_test_ratio': 0.7, 'hidden_layers': 3, 'units': 200, 'start_date': '2020-01-01', 'n_steps_in': 30, 'n_steps_out': 30, 'symbol': 'SID', 'start_date': '2020-01-01', 'interval': '1d'}
 
 # load and shape data
 '''conn = sqlite3.connect('stockPrediction_062721.db')
@@ -156,12 +158,12 @@ model = Sequential()
 model.add(LSTM(200, activation='relu', return_sequences=True, input_shape=(model_settings['n_steps_in'], 1)))
 model.add(LSTM(200, activation='relu'))
 model.add(Dense(model_settings['n_steps_out']))
-model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
+model.compile(optimizer='adam', loss='mse', metrics=['mse'])
 # model.compile(optimizer='adam', loss='mse')
 
 
 # callbacks = [EarlyStopping(monitor='loss', patience=45)]
-callbacks = [new_callback()]
+callbacks = [new_callback(), EarlyStopping(monitor='loss', patience=45)]
 
 # %%
 # fit model
@@ -170,9 +172,11 @@ callbacks = [new_callback()]
 x_train, y_train = prep_data(training_data_scaled, model_settings['n_steps_in'], model_settings['n_steps_out'])
 # x_train, y_train = prep_data(training_data, model_settings['n_steps_in'], model_settings['n_steps_out'])
 
-x_test, y_test = prep_data(test_data_scaled, model_settings['n_steps_in'], model_settings['n_steps_out'])
+# x_test, y_test = prep_data(test_data_scaled, model_settings['n_steps_in'], model_settings['n_steps_out'])
 
-model.fit(x_train, y_train, batch_size=model_settings['batch_size'], epochs=model_settings['epochs'], verbose=1, shuffle=True, callbacks=callbacks, validation_data=(x_test, y_test), validation_steps=1)
+# model.fit(x_train, y_train, batch_size=model_settings['batch_size'], epochs=model_settings['epochs'], verbose=1, shuffle=True, callbacks=callbacks, validation_data=(x_test, y_test), validation_steps=1)
+model.fit(x_train, y_train, batch_size=model_settings['batch_size'], epochs=model_settings['epochs'], verbose=1, shuffle=True, callbacks=callbacks)
+
 
 
 # %%
@@ -215,17 +219,32 @@ test_data = test_data.set_index('Datetime')
 predicted = predicted.set_index('price_datetime')
 
 # %%
+# run this cell to prep data and predict on all values
+symbol = model_settings['symbol']
+x_input = scaler.transform(close_df.to_numpy())
+# x_input = training_data_scaled.to_numpy()
+x_input = x_input[-model_settings['n_steps_in']:]
+# next line, b/c the data they feed there's before reshaping is 1D
+x_input = x_input.reshape((-1))
+x_input = x_input.reshape((1, model_settings['n_steps_in'], 1))
+yhat = model.predict(x_input)
+# yhat = scaler_dict[symbol].inverse_transform(yhat)
+yhat = scaler.inverse_transform(yhat)
+print(yhat)
+
+# %%
 # add dates to predicted dataframe
 # only use if not testing
 # only works w/ EOD values
 yhat = yhat.reshape((-1))
 predicted = pd.DataFrame(yhat, columns=[symbol])
-training_data = training_data.reset_index()
+# training_data = training_data.reset_index()
+close_df = close_df.reset_index()
 for i in range(len(predicted)):
     try:
         future_date = predicted['Date'].iloc[i -1] + datetime.timedelta(days=1)
     except:
-        future_date = training_data.Date.iloc[-1] + datetime.timedelta(days=1)
+        future_date = close_df.Date.iloc[-1] + datetime.timedelta(days=1)
     
     while future_date.weekday() in [5,6]:
         future_date = future_date + datetime.timedelta(days=1)
@@ -240,14 +259,22 @@ for i in range(len(predicted)):
     predicted['Date'].iloc[i] = future_date
 # predicted_price['price_datetime'] = future_dates_df['price_datetime']
 # this is so that when looping this code it doesn't cause problems
-training_data = training_data.set_index('Date')
+# training_data = training_data.set_index('Date')
+close_df = close_df.set_index('Date')
 
 predicted = predicted.set_index('Date')
 predicted = predicted.dropna()
 
 # %%
 # run this to shift the data to the right start point
+# ONLY FOR TRAINING/TESTING
 last_value = training_data['Close'].iloc[-1]
+difference = last_value - predicted[symbol].iloc[0]
+predicted = predicted + difference
+
+# %%
+# ONLY FOR NON-TESTING
+last_value = close_df['Close'].iloc[-1]
 difference = last_value - predicted[symbol].iloc[0]
 predicted = predicted + difference
 
@@ -280,7 +307,7 @@ training_data_scaled = pd.DataFrame(training_data_scaled)
 # %%
 # plot w/o test data
 plt.figure(figsize=(14,5))
-plt.plot(training_data['Close'].iloc[-120:], color='blue', label=f"{symbol} price, training data")
+plt.plot(close_df['Close'].iloc[-120:], color='blue', label=f"{symbol} price, training data")
 # plt.plot(test_data['Close'], color='red', label=f"{symbol} price, test data")
 plt.plot(predicted[f"{symbol}"].iloc[:60], color='green', label=f"{symbol} price, predicted data")
 plt.legend()
