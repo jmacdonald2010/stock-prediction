@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 07/06/2021 16:09
+Wrote a function that trains a model on a per symbol basis (rebuilds/trains a model for each security). So far, this has given me the best results (for MSE values) on a per-symbol basis. Going to implement some changes and write the function into its own file.
+
 ## 06/29/2021 19:48
 The single_symbol file is in a place that seems like it mostly works. Also working on a new script that will retrain and find the best n_steps_in to use. The optimization algorithm for that is still in progress.
 

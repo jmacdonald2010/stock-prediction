@@ -6,6 +6,7 @@
 # If this works well, I am going to delete all of the above cells, as I'm tired of making new notebooks to try different things.
 
 # %%
+import matplotlib
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -66,7 +67,7 @@ current_date = datetime.datetime.now().strftime("%Y-%m-%d")
 # settings to mess w/
 # uncomment, comment as needed
 # 5 steps in is best for EOD, 30 steps out
-model_settings = {'epochs': 2000, 'batch_size': 100, 'train_test_ratio': 0.7, 'hidden_layers': 3, 'units': 200, 'start_date': '2020-01-01', 'n_steps_in': 30, 'n_steps_out': 30, 'symbol': 'SID', 'start_date': '2020-01-01', 'interval': '1d'}
+model_settings = {'epochs': 2000, 'batch_size': 100, 'train_test_ratio': 0.7, 'hidden_layers': 3, 'units': 200, 'start_date': '2020-01-01', 'n_steps_in': 2, 'n_steps_out': 30, 'symbol': 'ZUMZ', 'start_date': '2020-01-01', 'interval': '1d'}
 
 # load and shape data
 '''conn = sqlite3.connect('stockPrediction_062721.db')
@@ -279,16 +280,20 @@ difference = last_value - predicted[symbol].iloc[0]
 predicted = predicted + difference
 
 # %%
+# testing only
+mse = mean_squared_error(test_data.to_numpy(), predicted.to_numpy())
+mse
+
+# %%
 plt.figure(figsize=(14,5))
 plt.plot(training_data['Close'], color='blue', label=f"{symbol} price, training data")
 plt.plot(test_data['Close'], color='red', label=f"{symbol} price, test data")
 plt.plot(predicted[f"{symbol}"], color='green', label=f"{symbol} price, predicted data")
+plt.title(f'{symbol}_mse_{mse}')
 plt.legend()
+plt.show()
 
-# %%
-# testing only
-mse = mean_squared_error(test_data.to_numpy(), predicted.to_numpy())
-mse
+
 # %%
 # predictions
 print('Max:', predicted[symbol].max(), "Max Date:", predicted[symbol].idxmax(), 'Percent increase to max from current:', ((predicted[symbol].max() - df['Close'].iloc[-1]) / df['Close'].iloc[-1] * 100))
