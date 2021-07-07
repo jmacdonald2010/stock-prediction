@@ -135,6 +135,19 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
     x_input = x_input.reshape((-1))
     x_input = x_input.reshape((1, model_settings['n_steps_in'], 1))
     yhat = model.predict(x_input)
+    
+    # calculate the MSE based on the scaled values, not actual values
+    # not entirely sure this is the best way to do this, but we'll see.
+    yhat_test = yhat.reshape((-1))
+    yhat_test = pd.DataFrame(yhat_test, columns=[symbol])
+    try:
+        mse = mean_squared_error(test_data_scaled.to_numpy(), yhat_test.to_numpy())
+    except:
+        print("Error in MSE Calculation.")
+        return
+    if mse > min_mse:
+        print('MSE too great, not making future prediction.')
+        return
     yhat = scaler.inverse_transform(yhat)
     print(yhat)
 
@@ -154,6 +167,9 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
     difference = last_value - predicted[symbol].iloc[0]
     predicted = predicted + difference
 
+    # below commented out due to mse calculation being done on scaled values above
+    # if successful, will be removed in a future version
+    '''
     try:
         mse = mean_squared_error(test_data.to_numpy(), predicted.to_numpy())
     except:
@@ -162,7 +178,7 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
     print('MSE:', mse)
     if mse > min_mse:
         print('MSE too great, not making future prediction.')
-        return
+        return'''
 
     plt.figure(figsize=(14,5))
     plt.plot(training_data['Close'], color='blue', label=f"{symbol} price, training data")
@@ -229,4 +245,4 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
 
 
 # this is to test the function
-predict_symbol('ALMTF')   
+predict_symbol('ABNAF')   

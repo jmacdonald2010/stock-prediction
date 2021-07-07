@@ -6,6 +6,9 @@ Wrote a function that trains a model on a per symbol basis (rebuilds/trains a mo
 ### 16:56
 Function now exits early w/o predictions if the predictions contain values that are below 0.
 
+### 21:50
+Using normalized MSE instead of calculating it based on the regular values. Hopefully this will help remove predictions of low dollar symbols with wild fluctuation.
+
 ## 06/29/2021 19:48
 The single_symbol file is in a place that seems like it mostly works. Also working on a new script that will retrain and find the best n_steps_in to use. The optimization algorithm for that is still in progress.
 
