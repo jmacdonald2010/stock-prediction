@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 07/07/2021 17:53
+Adding in the option to not predict on falling symbols, and to set a minimum percent increase to predict on. Need to fix an issue where the the title on the predicted graphs are now too long to see everything.
+
 ## 07/06/2021 16:09
 Wrote a function that trains a model on a per symbol basis (rebuilds/trains a model for each security). So far, this has given me the best results (for MSE values) on a per-symbol basis. Going to implement some changes and write the function into its own file.
 

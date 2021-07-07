@@ -50,7 +50,7 @@ def prep_data(data, n_steps_in, n_steps_out):
     X = X.reshape((X.shape[0], X.shape[1], 1))
     return X, y
 
-def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01', n_steps_in=5, n_steps_out=30, training_mse=.002, min_mse=3.5):
+def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01', n_steps_in=5, n_steps_out=30, training_mse=.002, min_mse=3.5, min_percent_increase=0., show_downward_predictions=False):
 
     current_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
@@ -231,13 +231,20 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
     predicted = predicted + difference
 
     max_increase = ((predicted[symbol].max() - df['Close'].iloc[-1]) / df['Close'].iloc[-1] * 100)
+    lowest_percent_decrease = ((predicted[symbol].min() - df['Close'].iloc[-1]) / df['Close'].iloc[-1] * 100)
+
+    # determine if the minimum percent increase is enough to show and save the predicted plot
+    if max_increase < min_percent_increase:
+        if show_downward_predictions is False:
+            print('Symbol not projected to increase in price during the predicted time frame. Please enter a different symbol or adjust the prediction settings.')
+            return
 
     # plot w/o test data
     plt.figure(figsize=(14,5))
     plt.plot(close_df['Close'].iloc[-120:], color='blue', label=f"{symbol} price, training data")
     # plt.plot(test_data['Close'], color='red', label=f"{symbol} price, test data")
     plt.plot(predicted[f"{symbol}"].iloc[:60], color='green', label=f"{symbol} price, predicted data")
-    plt.title(f'{symbol}_mse_{mse}_max_{predicted[symbol].max()}_maxDate_{predicted[symbol].idxmax()}_percent_to_max_{max_increase}')
+    plt.title(f'{symbol}_mse_{mse}_max_{predicted[symbol].max()}_maxDate_{predicted[symbol].idxmax()}_percent_to_max_{max_increase}_minDate_{predicted[symbol].idxmin()}_percent_to_min_{lowest_percent_decrease}')
     plt.legend()
     plt.savefig(f'{symbol}_{current_date}_mse_{mse}_real_prediction.png')
 
@@ -245,4 +252,4 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
 
 
 # this is to test the function
-predict_symbol('ABNAF')   
+predict_symbol('AEY', show_downward_predictions=True)   
