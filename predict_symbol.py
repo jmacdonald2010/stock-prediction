@@ -244,7 +244,7 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
     plt.plot(close_df['Close'].iloc[-120:], color='blue', label=f"{symbol} price, training data")
     # plt.plot(test_data['Close'], color='red', label=f"{symbol} price, test data")
     plt.plot(predicted[f"{symbol}"].iloc[:60], color='green', label=f"{symbol} price, predicted data")
-    plt.title(f'{symbol}_mse_{mse}_max_{predicted[symbol].max()}_maxDate_{predicted[symbol].idxmax()}_percent_to_max_{max_increase}_minDate_{predicted[symbol].idxmin()}_percent_to_min_{lowest_percent_decrease}')
+    plt.title(f'{symbol}_mse_{mse}_max_{predicted[symbol].max()}_maxDate_{predicted[symbol].idxmax()}_percent_to_max_{max_increase}_minDate_{predicted[symbol].idxmin()}_percent_to_min_{lowest_percent_decrease}', fontsize=8)
     plt.legend()
     plt.savefig(f'{symbol}_{current_date}_mse_{mse}_real_prediction.png')
 
@@ -252,4 +252,4 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
 
 
 # this is to test the function
-predict_symbol('AEY', show_downward_predictions=True)   
+predict_symbol('XSPA', show_downward_predictions=True)

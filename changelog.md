@@ -1,5 +1,8 @@
 # Changelog for in-progress branch
 
+## 07/10/2021 15:13
+Fixed font size issue.
+
 ## 07/07/2021 17:53
 Adding in the option to not predict on falling symbols, and to set a minimum percent increase to predict on. Need to fix an issue where the the title on the predicted graphs are now too long to see everything.
 
