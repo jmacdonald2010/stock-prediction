@@ -50,7 +50,7 @@ def prep_data(data, n_steps_in, n_steps_out):
     X = X.reshape((X.shape[0], X.shape[1], 1))
     return X, y
 
-def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01', n_steps_in=5, n_steps_out=30, training_mse=.002, min_mse=3.5, min_percent_increase=0., show_downward_predictions=False, save_prediction_as_csv=False):
+def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01', n_steps_in=5, n_steps_out=None, training_mse=.002, min_mse=3.5, min_percent_increase=0., show_downward_predictions=False, save_prediction_as_csv=False):
 
     current_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
@@ -102,7 +102,8 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
     print(test_data_scaled.describe())
 
     # comment out the below line if you want a specific number of predictions, this is mainly useful to see test vs predicted data
-    model_settings['n_steps_out'] = len(test_data)
+    if model_settings['n_steps_out'] is None:
+        model_settings['n_steps_out'] = len(test_data)
 
 
     # define model
@@ -141,7 +142,12 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
     yhat_test = yhat.reshape((-1))
     yhat_test = pd.DataFrame(yhat_test, columns=[symbol])
     try:
-        mse = mean_squared_error(test_data_scaled.to_numpy(), yhat_test.to_numpy())
+        if len(test_data_scaled) > len(yhat_test):
+            mse = mean_squared_error(test_data_scaled[:len(yhat_test)].to_numpy(), yhat_test.to_numpy())
+        elif len(test_data_scaled) < len(yhat_test):
+            mse = mean_squared_error(test_data_scaled.to_numpy(), yhat_test[:len(test_data_scaled)].to_numpy())
+        else:
+            mse = mean_squared_error(test_data_scaled.to_numpy(), yhat_test.to_numpy())
     except:
         print("Error in MSE Calculation.")
         return
@@ -182,8 +188,17 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
 
     plt.figure(figsize=(14,5))
     plt.plot(training_data['Close'], color='blue', label=f"{symbol} price, training data")
-    plt.plot(test_data['Close'], color='red', label=f"{symbol} price, test data")
-    plt.plot(predicted[f"{symbol}"], color='green', label=f"{symbol} price, predicted data")
+    if len(test_data) > len(predicted):
+        plt.plot(test_data['Close'][:len(predicted)], color='red', label=f"{symbol} price, test data")
+        plt.plot(predicted[f"{symbol}"], color='green', label=f"{symbol} price, predicted data")
+    elif len(test_data) < len(predicted):
+        plt.plot(test_data['Close'], color='red', label=f"{symbol} price, test data")
+        plt.plot(predicted[f"{symbol}"][:len(test_data)], color='green', label=f"{symbol} price, predicted data")
+    else:
+        plt.plot(test_data['Close'], color='red', label=f"{symbol} price, test data")
+        plt.plot(predicted[f"{symbol}"], color='green', label=f"{symbol} price, predicted data")
+    # plt.plot(test_data['Close'], color='red', label=f"{symbol} price, test data")
+    # plt.plot(predicted[f"{symbol}"], color='green', label=f"{symbol} price, predicted data")
     plt.title(f'{symbol}_mse_{mse}_train_test')
     plt.legend()
     plt.savefig(f'{symbol}_{current_date}_mse_{mse}_test.png')
@@ -246,9 +261,10 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
 
     # plot w/o test data
     plt.figure(figsize=(14,5))
+    # this setting below could probably be adjusted
     plt.plot(close_df['Close'].iloc[-120:], color='blue', label=f"{symbol} price, training data")
     # plt.plot(test_data['Close'], color='red', label=f"{symbol} price, test data")
-    plt.plot(predicted[f"{symbol}"].iloc[:60], color='green', label=f"{symbol} price, predicted data")
+    plt.plot(predicted[f"{symbol}"], color='green', label=f"{symbol} price, predicted data")
     plt.title(f'{symbol}_mse_{mse}_max_{predicted[symbol].max()}_maxDate_{predicted[symbol].idxmax()}_percent_to_max_{max_increase}_minDate_{predicted[symbol].idxmin()}_percent_to_min_{lowest_percent_decrease}', fontsize=8)
     plt.legend()
     plt.savefig(f'{symbol}_{current_date}_mse_{mse}_real_prediction.png')
@@ -257,4 +273,4 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
 
 
 # this is to test the function
-predict_symbol('XSPA', show_downward_predictions=True, save_prediction_as_csv=True)
+predict_symbol('XSPA', show_downward_predictions=True)
