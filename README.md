@@ -1,16 +1,16 @@
 # stock-prediction
 A project with the goal of using information from securities trading under $5 to train a machine learning model. A project to familiarize myself with databases, data science packages, and machine learning.
 
-Current files in this branch are:
+This project is IN PROGRESS.
 
-- File to perform API calls from alphavantage.
-- File to perform API calls using the yfinance package.
-- File containing database functions (based on https://www.freecodecamp.org/news/connect-python-with-sql/)
-- Stock class file (in progress, barely started)
+The goal of the project is for the application to:
 
-This project does not constitute financial/investment advice. Please consult a qualified financial professional. This project is for educational purposes only.
+    Regularly fetch and store price information into a database.
+    Utilize a machine-learning model to predict future price movements.
+    Synthesize a series of predictions for select securities future price movements.
+    Compare previous predictions to actual results and report how accurate the previous predictions were.
+    and more.
 
-Last update:
+The overall goal of the project is for me to learn the basics of data analysis with python and machine learning.
 
-1/18/21 17:58
-going to try running the yf get history file; unsure how it will work. committing and pushing to github prior to working. probably done for the night.
+This project does not constitute financial/investment advice. Please consult a qualified financial professional for financial/investment advice.
