@@ -1,7 +1,4 @@
-# Changelog for pull-from-reddit-api-01
+# Changelog for in-progress
 
-## 05/17/2021 22:06
-Assembles a basic list (and dict) of what people on reddit are talking about. Merging to in-progress as it may be useful later.
-
-## 05/16/2021 20:19
-The goal of this is to pull stock symbols from comments on reddit posts from certain reddits to see what people are talking about. Currently it works to assemble a list of symbols, just needs to clean up the list a bit more, which means digging out the regex reference materials.
+## 07/10/2021 16:06
+In order to resolve a merge issue, I have started over the changelog for in-progress so that the reddit-fetching script will work well with the prediction script.
