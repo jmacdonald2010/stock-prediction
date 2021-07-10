@@ -1,7 +1,7 @@
 # stock-prediction
 A project with the goal of using information from securities trading under $5 to train a machine learning model. A project to familiarize myself with databases, data science packages, and machine learning.
 
-This project is IN PROGRESS. The in-progress branch contains files that are in progress or not a part of the core application (e.g. files used for data collection).
+This project is IN PROGRESS.
 
 The goal of the project is for the application to:
 

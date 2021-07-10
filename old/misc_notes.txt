@@ -1,0 +1,5 @@
+1/18/21 17:58
+going to try running the yf get history file; unsure how it will work. committing and pushing to github prior to working. probably done for the night.
+
+2233 to do
+in my long-running scripts that retrieve data, add in some print statements so i know that they're still running and not frozen.

@@ -1,0 +1,23 @@
+/databaseBackups
+/.vscode
+/.ipynb_checkpoints
+/__pycache__
+/oldData
+/test_notebooks
+/test_development_files
+config.py
+getPriceHistory_yfinance.ipynb
+.DS_store
+allUnderFiveDollarsAndPrevOwned - Copy.txt
+stockPrediction.db
+TDS_predictMultipleTickers.pdf
+reddit_auth.py
+stockPrediction_05252021.db
+stockPrediction_05262021.db
+stockPrediction_06072021.db
+/alt_models
+/test_plots
+stockPrediction_062721.db
+/predicted_plots_0702
+/alt_models
+reddit_auth.py
