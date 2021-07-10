@@ -50,7 +50,7 @@ def prep_data(data, n_steps_in, n_steps_out):
     X = X.reshape((X.shape[0], X.shape[1], 1))
     return X, y
 
-def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01', n_steps_in=5, n_steps_out=30, training_mse=.002, min_mse=3.5, min_percent_increase=0., show_downward_predictions=False):
+def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01', n_steps_in=5, n_steps_out=30, training_mse=.002, min_mse=3.5, min_percent_increase=0., show_downward_predictions=False, save_prediction_as_csv=False):
 
     current_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
@@ -239,6 +239,11 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
             print('Symbol not projected to increase in price during the predicted time frame. Please enter a different symbol or adjust the prediction settings.')
             return
 
+    # save prediction as csv if true
+    if save_prediction_as_csv is True:
+        predicted.to_csv(f'{symbol}_prediction_{current_date}')
+        print('Saved prediction to csv')
+
     # plot w/o test data
     plt.figure(figsize=(14,5))
     plt.plot(close_df['Close'].iloc[-120:], color='blue', label=f"{symbol} price, training data")
@@ -252,4 +257,4 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
 
 
 # this is to test the function
-predict_symbol('XSPA', show_downward_predictions=True)
+predict_symbol('XSPA', show_downward_predictions=True, save_prediction_as_csv=True)
