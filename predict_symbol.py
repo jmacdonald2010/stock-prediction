@@ -273,4 +273,4 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
 
 
 # this is to test the function
-predict_symbol('XSPA', show_downward_predictions=True)
+# predict_symbol('XSPA', show_downward_predictions=True)
