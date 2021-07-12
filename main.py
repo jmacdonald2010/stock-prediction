@@ -37,7 +37,7 @@ while True:
 
             # iterate over the watchlist and create predictions, saving charts, saving info as csv
             for symbol in watchlist:
-                predict_symbol(symbol, show_downward_predictions=True, save_prediction_as_csv=True)
+                predict_symbol(symbol, show_downward_predictions=True, save_prediction_as_csv=True, is_watchlist_symbol=True)
 
         # predict all symbols
         predict_symbol(symbol, min_percent_increase=20)
