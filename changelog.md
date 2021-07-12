@@ -3,6 +3,9 @@
 ## 07/12/2021 16:50
 Updated the predict_symbol function to create a folder each day it is run and save all the plots and csv files there.
 
+### 17:03
+predict_symbol creates subfolder for symbols that are on watchlist.
+
 ## 07/11/2021 12:23
 Started work on the main.py script. Not uploading my personal list of watchlist symbols to git. Working on the watch-list loop, then altering the predict_symbol function to create a new folder for each day's predictions.
 
