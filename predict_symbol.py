@@ -54,6 +54,11 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
 
     current_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
+    path = f'{current_date}_predictions'
+
+    if not os.path.exists(path):
+        os.makedirs(path)
+
     model_settings = {'epochs': epochs, 'batch_size': batch_size, 'train_test_ratio': 0.7, 'hidden_layers': 3, 'units': 200, 'start_date': start_date, 'n_steps_in': n_steps_in, 'n_steps_out': n_steps_out, 'symbol': symbol, 'interval': '1d'}
 
     # can't remember all intraday time intervals for the model settings
@@ -201,7 +206,7 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
     # plt.plot(predicted[f"{symbol}"], color='green', label=f"{symbol} price, predicted data")
     plt.title(f'{symbol}_mse_{mse}_train_test')
     plt.legend()
-    plt.savefig(f'{symbol}_{current_date}_mse_{mse}_test.png')
+    plt.savefig(f'{path}/{symbol}_{current_date}_mse_{mse}_test.png')
 
     # predict on all values
     symbol = model_settings['symbol']
@@ -256,7 +261,7 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
 
     # save prediction as csv if true
     if save_prediction_as_csv is True:
-        predicted.to_csv(f'{symbol}_prediction_{current_date}')
+        predicted.to_csv(f'{path}/{symbol}_prediction_{current_date}')
         print('Saved prediction to csv')
 
     # plot w/o test data
@@ -267,10 +272,10 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
     plt.plot(predicted[f"{symbol}"], color='green', label=f"{symbol} price, predicted data")
     plt.title(f'{symbol}_mse_{mse}_max_{predicted[symbol].max()}_maxDate_{predicted[symbol].idxmax()}_percent_to_max_{max_increase}_minDate_{predicted[symbol].idxmin()}_percent_to_min_{lowest_percent_decrease}', fontsize=8)
     plt.legend()
-    plt.savefig(f'{symbol}_{current_date}_mse_{mse}_real_prediction.png')
+    plt.savefig(f'{path}/{symbol}_{current_date}_mse_{mse}_real_prediction.png')
 
     print('Completed train/test and future prediction for', symbol)
 
 
 # this is to test the function
-# predict_symbol('XSPA', show_downward_predictions=True)
+# predict_symbol('LPCN', show_downward_predictions=True, save_prediction_as_csv=True)
