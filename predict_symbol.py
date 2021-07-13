@@ -288,8 +288,18 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
     else:
         plt.savefig(f'{path}/{symbol}_{current_date}_mse_{mse}_real_prediction.png')
 
+    # create stats dict
+    stats = {
+        'mse': mse,
+        'max_percent_increase': max_increase,
+        'max_increase_date': predicted[symbol].idxmax(),
+        'max_percent_decrease': lowest_percent_decrease,
+        'max_decrease_date': predicted[symbol].idxmin()
+    }
+
     print('Completed train/test and future prediction for', symbol)
+    return stats
 
 
 # this is to test the function
-# predict_symbol('LPCN', show_downward_predictions=True, save_prediction_as_csv=True, is_watchlist_symbol=False)
+print(predict_symbol('LPCN', show_downward_predictions=True, save_prediction_as_csv=True, is_watchlist_symbol=False))
