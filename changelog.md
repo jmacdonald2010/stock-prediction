@@ -6,6 +6,9 @@ Updated the predict_symbol function to create a folder each day it is run and sa
 ### 17:03
 predict_symbol creates subfolder for symbols that are on watchlist.
 
+### 20:16
+Built Reddit API call into main script. Additional work is needed to get the data I need in the format I need, but I will work with that more once I get to the emailing stage.
+
 ## 07/11/2021 12:23
 Started work on the main.py script. Not uploading my personal list of watchlist symbols to git. Working on the watch-list loop, then altering the predict_symbol function to create a new folder for each day's predictions.
 
