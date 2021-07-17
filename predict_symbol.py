@@ -292,9 +292,9 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
     stats = {
         'mse': mse,
         'max_percent_increase': max_increase,
-        'max_increase_date': predicted[symbol].idxmax(),
+        'max_increase_date': predicted[symbol].idxmax().strftime('%Y-%m-%d'),
         'max_percent_decrease': lowest_percent_decrease,
-        'max_decrease_date': predicted[symbol].idxmin()
+        'max_decrease_date': predicted[symbol].idxmin().strftime('%Y-%m-%d')
     }
 
     print('Completed train/test and future prediction for', symbol)
