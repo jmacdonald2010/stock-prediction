@@ -302,4 +302,4 @@ def predict_symbol(symbol, epochs=2000, batch_size=100, start_date='2020-01-01',
 
 
 # this is to test the function
-print(predict_symbol('LPCN', show_downward_predictions=True, save_prediction_as_csv=True, is_watchlist_symbol=False))
+# print(predict_symbol('LPCN', show_downward_predictions=True, save_prediction_as_csv=True, is_watchlist_symbol=False))
