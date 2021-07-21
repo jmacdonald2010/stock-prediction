@@ -8,6 +8,7 @@ import pandas as pd
 # starting vars
 pickle_symbol_read = False
 after_hours_complete = False
+stats_dict = {}
 
 # load the list of all symbols (loads once)
 with open('all_symbols.txt', 'r') as f:
@@ -43,13 +44,19 @@ while True:
 
             # iterate over the watchlist and create predictions, saving charts, saving info as csv
             for symbol in watchlist:
-                # predict_symbol(symbol, show_downward_predictions=True, save_prediction_as_csv=True, is_watchlist_symbol=True)
+                stats_dict[symbol] = predict_symbol(symbol, show_downward_predictions=True, save_prediction_as_csv=True, is_watchlist_symbol=True)
                 # comment out continue below when testing is done, uncomment out above line
-                continue
+                # continue
 
             # get new symbols from reddit, if there's anything interesting
             new_symbols = pd.Series(get_new_symbols())
             new_symbols = new_symbols.sort_values(ascending=False)
 
+            # predict on new symbols from reddit
+            for reddit_symbol in new_symbols:
+                stats_dict[reddit_symbol] = predict_symbol(reddit_symbol, show_downward_predictions=True, save_prediction_as_csv=True, is_watchlist_symbol=True)
+
+            # insert send email module here
+
         # predict all symbols
-        predict_symbol(symbol, min_percent_increase=20)
+        stats_dict[symbol] = predict_symbol(symbol, min_percent_increase=20)
