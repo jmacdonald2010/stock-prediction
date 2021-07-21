@@ -1,5 +1,8 @@
 # Changelog for main
 
+## 07/20/21 23:24
+Wrote a simple module to send emails. Next step is to turn it into a function, and call that function the main.py app.
+
 ## 07/12/2021 16:50
 Updated the predict_symbol function to create a folder each day it is run and save all the plots and csv files there.
 
