@@ -26,7 +26,7 @@ The following symbols have large projected growth, and may be worth looking into
 
 (other symbols go here)
 
-And of course, this does not consititue financial/investment advice."""
+And of course, this does not constitute financial/investment advice."""
 
 with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
     server.login(config.app_email, config.app_email_pw)
